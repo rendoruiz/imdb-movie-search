@@ -55,7 +55,7 @@ const SearchResultItem = ({
   movie,
   onSummaryClick,
 }) => (
-  <li className="flex px-2 py-3 transition-colors hover:bg-yellow-500/10 active:bg-yellow-500/50 sm:rounded-md sm:border-2 sm:border-transparent sm:bg-black/50 sm:hover:border-yellow-500 lg:py-2">
+  <li className="flex px-2 py-3 transition-colors hover:bg-yellow-200/5 hover:outline hover:outline-yellow-500 sm:rounded-md sm:bg-black/50 lg:py-2">
     <div className='shrink-0 grid place-items-center rounded-md border-2 mr-3 p-1 w-24 border-yellow-500 lg:w-40'>
       {movie.Poster !== "N/A" ? (
         <img
@@ -84,13 +84,13 @@ const SearchResultItem = ({
           target='_blank'
           rel='noreferrer'
           title='Open IMDb page'
-          className="rounded px-2 py-1 bg-yellow-500 text-black leading-tight text-center md:py-2"
+          className="rounded px-2 py-1 bg-yellow-500 text-black leading-tight text-center hover:opacity-90 active:outline active:outline-2 active:outline-offset-2 active:outline-yellow-500 md:py-2"
         >
           IMDb page
         </a>
         <button
           type="button"
-          className='rounded px-2 py-1 bg-yellow-500 text-black leading-tight md:py-2'
+          className='rounded px-2 py-1 bg-yellow-500 text-black leading-tight hover:opacity-90 active:outline active:outline-2 active:outline-offset-2 active:outline-yellow-500 md:py-2'
           onClick={() => onSummaryClick(movie.imdbID)}
         >
           Summary
