@@ -131,7 +131,7 @@ const App = () => {
         .then((response) => {
           const { Error: isError, Search: searchItems, totalResults: itemCount } = response.data;
           if (isError) {
-            dispatchSearchResults({ type: 'SEARCH_PAGER_ERROR' });
+            throw new Error(isError);
           } else if (searchItems && itemCount) {
             dispatchSearchResults({ 
               type: 'SEARCH_PAGER_SUCCESS',
@@ -140,13 +140,11 @@ const App = () => {
                 itemCount: itemCount
               },
             });
-          } else {
-            throw new Error();
-          }
+          } 
         })
         .catch((error) => {
           console.error(error);
-          dispatchSearchResults({ type: 'SEARCH_ERROR' });
+          dispatchSearchResults({ type: 'SEARCH_PAGER_ERROR' });
         }); 
     }
   }

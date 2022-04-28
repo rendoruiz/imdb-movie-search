@@ -73,7 +73,7 @@ const SearchResults = ({
             >
               {searchResults.isPagerLoading ? (
                 "Loading..."
-              ) : searchResults.isError ?(
+              ) : searchResults.isPagerError ?(
                 "Server error occured"
               ) : (
                 "Load More"
