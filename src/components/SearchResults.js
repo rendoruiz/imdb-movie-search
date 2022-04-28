@@ -29,15 +29,13 @@ const SearchResults = ({ searchResults }) => {
                     className='rounded'
                   />
                 </div>
+
                 <div className='flex-1'>
                   <h2 className='text-lg break-words leading-tight lg:text-xl lg:leading-snug'>
                     {movie.Title}
                   </h2>
                   <p className='mt-1 font-mono text-sm lg:text-lg '>
                     ({movie.Year})
-                  </p>
-                  <p>
-                    {movie.Plot}
                   </p>
                 </div>
               </li>
