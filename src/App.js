@@ -14,13 +14,18 @@ const searchReducer = (state, action) => {
       return {
         ...state,
         data: null,
+        currentPage: 1,
+        itemCount: null,
         isLoading: true,
         isError: false,
+        isPagerLoading: false,
+        isPagerError: false,
       };
     case 'SEARCH_SUCCESS':
       return {
         ...state,
-        data: action.payload,
+        data: action.payload.data,
+        itemCount: action.payload.itemCount,
         isLoading: false,
         isError: false,
       };
@@ -38,6 +43,29 @@ const searchReducer = (state, action) => {
         isLoading: false,
         isError: true,
       }
+    case 'SEARCH_PAGER_INIT':
+      return { 
+        ...state,
+        isPagerLoading: true,
+        isPagerError: false,
+      }
+    case 'SEARCH_PAGER_SUCCESS':
+      return { 
+        ...state,
+        data: [...state.data, ...action.payload.data],
+        currentPage: state.currentPage += 1,
+        itemCount: action.payload.itemCount,
+        isPagerLoading: false,
+        isPagerError: false,
+      }
+    case 'SEARCH_PAGER_ERROR':
+      return { 
+        ...state,
+        isPagerLoading: false,
+        isPagerError: true,
+      }
+    default:
+      throw new Error();
   }
 }
 
@@ -47,31 +75,69 @@ const App = () => {
     searchReducer,
     {
       data: null,
+      currentPage: 1,
+      itemCount: null,
       isLoading: false,
       isError: false,
+      isPagerLoading: false,
+      isPagerError: false,
     }
-  )
+  );
 
   const handleSearchTitleInput = (e) => {
     setSearchTitle(e.target.value);
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-
     if (searchTitle.trim().length > 0) {
       dispatchSearchResults({ type: 'SEARCH_INIT' });
 
       const requestUrl = API_ENDPOINT + `s=${searchTitle}`;
       axios.get(requestUrl)
         .then((response) => {
-          if (response.data.Error) {
+          const { Error: isError, Search: searchItems, totalResults: itemCount } = response.data;
+          if (isError) {
             dispatchSearchResults({ type: 'SEARCH_NOT_FOUND' });
-          } else if (response.data.Search) {
+          } else if (searchItems && itemCount) {
             dispatchSearchResults({ 
               type: 'SEARCH_SUCCESS',
-              payload: response.data.Search,
+              payload: {
+                data: searchItems,
+                itemCount: itemCount
+              },
             });
+          } else {
+            throw new Error();
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          dispatchSearchResults({ type: 'SEARCH_ERROR' });
+        }); 
+    }
+    e.preventDefault();
+  }
+
+  const handleNextPage = () => {
+    if (searchResults.data.length < searchResults.itemCount) {
+      dispatchSearchResults({ type: 'SEARCH_PAGER_INIT' });
+
+      const requestUrl = API_ENDPOINT + `s=${searchTitle}&page=${searchResults.currentPage+1}`;
+      axios.get(requestUrl)
+        .then((response) => {
+          const { Error: isError, Search: searchItems, totalResults: itemCount } = response.data;
+          if (isError) {
+            dispatchSearchResults({ type: 'SEARCH_PAGER_ERROR' });
+          } else if (searchItems && itemCount) {
+            dispatchSearchResults({ 
+              type: 'SEARCH_PAGER_SUCCESS',
+              payload: {
+                data: searchItems,
+                itemCount: itemCount
+              },
+            });
+          } else {
+            throw new Error();
           }
         })
         .catch((error) => {
@@ -112,7 +178,10 @@ const App = () => {
           </div>
         </section>
 
-        <SearchResults searchResults={searchResults} />
+        <SearchResults 
+          searchResults={searchResults} 
+          onNextPage={handleNextPage}
+        />
       </main>
     </div>
   );
