@@ -69,6 +69,32 @@ const searchReducer = (state, action) => {
   }
 }
 
+const movieDetailReducer = (state, action) => {
+  switch(action.type) {
+    case 'FETCH_DETAIL_INIT':
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+      }
+    case 'FETCH_DETAIL_SUCCESS':
+      return {
+        ...state,
+        data: [...state.data, ...action.payload.data],
+        isLoading: false,
+        isError: false,
+      }
+    case 'FETCH_DETAIL_ERROR':
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      }
+    default:
+      throw new Error();
+  }
+}
+
 const App = () => {
   const [searchTitle, setSearchTitle] = React.useState("");
   const [searchResults, dispatchSearchResults] = React.useReducer(
