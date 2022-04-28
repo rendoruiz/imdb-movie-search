@@ -1,3 +1,5 @@
+import MoviePoster from "./MoviePoster";
+
 const SearchResults = ({ 
   searchResults, 
   onNextPage,
@@ -57,17 +59,11 @@ const SearchResultItem = ({
 }) => (
   <li className="flex px-2 py-3 transition-colors hover:bg-yellow-200/5 hover:outline hover:outline-yellow-500 sm:rounded-md sm:bg-black/50 lg:py-2">
     <div className='shrink-0 grid place-items-center rounded-md border-2 mr-3 p-1 w-24 border-yellow-500 lg:w-40'>
-      {movie.Poster !== "N/A" ? (
-        <img
-          src={movie.Poster}
-          alt={`Movie Poster for ${movie.Title}`}
-          className='rounded'
-        />
-      ) : (
-        <span className="text-center lg:text-lg">
-          Image Not Available
-        </span>
-      )}
+      <MoviePoster
+        poster={movie.Poster}
+        title={movie.Title}
+        className='rounded'
+      />
     </div>
 
     <div className='flex flex-col flex-1'>

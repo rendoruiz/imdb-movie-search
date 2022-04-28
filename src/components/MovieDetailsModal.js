@@ -1,3 +1,5 @@
+import MoviePoster from "./MoviePoster";
+
 const MovieDetailsModal = ({
   movieDetailReducer,
   onToggleVisibility,
@@ -19,9 +21,9 @@ const MovieDetailsModal = ({
           <p className='text-lg lg:text-xl'>Something went wrong. Please try again later.</p>
         ) : (
           <div className='sm:grid sm:grid-cols-[auto,1fr] sm:gap-5'>
-            <img 
-              src={movieDetailReducer.data.Poster} 
-              alt={'Movie Poster for ' + movieDetailReducer.data.Title}
+            <MoviePoster
+              poster={movieDetailReducer.data.Poster} 
+              title={movieDetailReducer.data.Title}
               className='w-full max-w-[320px]'
             />
 
