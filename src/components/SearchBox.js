@@ -20,24 +20,28 @@ const SearchBox = ({
       value={value}
       onChange={onInput}
     />
-    <button
-      type='reset'
-      title='reset text'
-      className='shrink-0'
-    >
-      <CrossIcon
-        className='w-10 h-5 px-2'
-      />
-    </button>
-    <button
-      type='submit'
-      title='search text'
-      className='shrink-0'
-    >
-      <SearchIcon
-        className='w-10 h-5 px-2'
-      />
-    </button>
+    {onReset && (
+      <button
+        type='reset'
+        title='reset text'
+        className='shrink-0'
+      >
+        <CrossIcon
+          className='w-10 h-5 px-2'
+        />
+      </button>
+    )}
+    {onSubmit && (
+      <button
+        type='submit'
+        title='search text'
+        className='shrink-0'
+      >
+        <SearchIcon
+          className='w-10 h-5 px-2'
+        />
+      </button>
+    )}
   </form>
 )
  
