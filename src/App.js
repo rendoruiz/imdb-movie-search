@@ -183,6 +183,24 @@ const App = () => {
           onNextPage={handleNextPage}
         />
       </main>
+
+      <footer className='grid'>
+        <div className='grid place-items-center mx-auto p-5 w-full max-w-screen-lg'>
+          <p className='font-light text-stone-100'>
+            <span className='opacity-50'>
+              &copy; 2022&nbsp;
+            </span>
+            <a 
+              href='https://rendo.ca'
+              target='_blank'
+              rel='noreferrer'
+              className='font-normal opacity-50 transition-opacity hover:opacity-100'
+            >
+              Rendo Ruiz
+            </a>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
