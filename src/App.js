@@ -154,7 +154,7 @@ const App = () => {
           <h1 className='font-bold text-2xl'>
             IMDb Search
           </h1>
-          <p className='text-sm uppercase tracking-wider'>
+          <p className='text-sm uppercase tracking-wider leading-none'>
             Powered by&nbsp;
             <a 
               href="http://www.omdbapi.com/" 
@@ -167,8 +167,8 @@ const App = () => {
         </div>
       </header>
 
-      <main className='grid content-start'>
-        <section className='bg-black/80'>
+      <main className='relative grid content-start'>
+        <section className='sticky top-0 bg-black/50 backdrop-blur-sm'>
           <div className='mx-auto px-4 py-3 w-full max-w-screen-lg'>
             <TitleSearchBox 
               searchTitle={searchTitle}
