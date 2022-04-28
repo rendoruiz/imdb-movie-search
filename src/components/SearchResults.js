@@ -28,7 +28,7 @@ const SearchResults = ({
                 href={'https://www.imdb.com/title/' + movie.imdbID}
                 target='_blank'
                 rel='noreferrer'
-                className="flex px-2 py-3 transition-colors hover:bg-yellow-500/20 active:bg-yellow-500/50 lg:rounded lg:py-2"
+                className="flex px-2 py-3 transition-colors hover:bg-yellow-500/20 active:bg-yellow-500/50 sm:rounded lg:py-2"
               >
                 <div className='shrink-0 grid place-items-center rounded-md border-2 mr-3 p-1 w-24 border-yellow-500 lg:w-40'>
                   {movie.Poster !== "N/A" ? (
@@ -56,13 +56,21 @@ const SearchResults = ({
         </ul>
 
         {(searchResults.data.length < searchResults.itemCount) && (
-          <button
-            type='button' 
-            className='rounded mt-3 px-5 py-2 w-full bg-yellow-500 font-bold text-black uppercase tracking-wide transition-opacity hover:opacity-80 active:opacity-70 lg:mt-6'
-            onClick={onNextPage}
-          >
-            Load More
-          </button>
+          <div className='px-2 w-full'>
+            <button
+              type='button' 
+              className='rounded mt-3 px-5 py-2 w-full bg-yellow-500 font-bold text-black uppercase tracking-wide transition-opacity hover:opacity-80 active:opacity-70 lg:mt-6'
+              onClick={onNextPage}
+            >
+              {searchResults.isPagerLoading ? (
+                "Loading..."
+              ) : searchResults.isError ?(
+                "Server error occured"
+              ) : (
+                "Load More"
+              )}
+            </button>
+          </div>
         )}
       </>
     )}
