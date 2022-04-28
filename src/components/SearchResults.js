@@ -1,5 +1,3 @@
-import { data } from "autoprefixer";
-
 const SearchResults = ({ 
   searchResults, 
   onNextPage,
@@ -39,21 +37,29 @@ const SearchResults = ({
                   {movie.Poster !== "N/A" ? (
                     <img
                       src={movie.Poster}
-                      alt={`Poster image for ${movie.Title}`}
+                      alt={`Movie Poster for ${movie.Title}`}
                       className='rounded'
                     />
                   ) : (
-                    <span className="text-center lg:text-lg">Image Not Available</span>
+                    <span className="text-center lg:text-lg">
+                      Image Not Available
+                    </span>
                   )}
                 </div>
 
-                <div className='flex-1'>
+                <div className='flex flex-col flex-1'>
                   <h2 className='text-lg break-words leading-tight lg:text-xl lg:leading-snug'>
                     {movie.Title}
                   </h2>
                   <p className='mt-1 font-mono text-sm lg:text-lg '>
                     ({movie.Year})
                   </p>
+                  <button
+                    type="button"
+                    className='self-end rounded mt-auto px-2 py-1 bg-yellow-500/80 text-xs text-black leading-tight'
+                  >
+                    Open IMDb page
+                  </button>
                 </div>
               </a>
             </li>
