@@ -32,7 +32,7 @@ const SearchResults = ({
                 href={'https://www.imdb.com/title/' + movie.imdbID}
                 target='_blank'
                 rel='noreferrer'
-                className="flex px-2 py-3 transition-colors hover:bg-yellow-500/20 active:bg-yellow-500/50 sm:rounded lg:py-2"
+                className="flex px-2 py-3 transition-colors hover:bg-yellow-500/10 active:bg-yellow-500/50 sm:rounded-md sm:border-2 sm:border-transparent sm:bg-black/50 sm:hover:border-yellow-500 lg:py-2"
               >
                 <div className='shrink-0 grid place-items-center rounded-md border-2 mr-3 p-1 w-24 border-yellow-500 lg:w-40'>
                   {movie.Poster !== "N/A" ? (
