@@ -4,8 +4,9 @@ import './App.css';
 import SearchResults from './components/SearchResults';
 import TitleSearchBox from './components/TitleSearchBox';
 
+// http://www.omdbapi.com/
 const API_KEY = process.env.REACT_APP_OMDB_API_KEY;
-const API_ENDPOINT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&`;
+const API_ENDPOINT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&y&`;
 
 const searchReducer = (state, action) => {
   switch (action.type) {
@@ -26,14 +27,14 @@ const searchReducer = (state, action) => {
     case 'SEARCH_NOT_FOUND':
       return {
         ...state,
-        data: null,
+        data: [],
         isLoading: false,
         isError: false,
       }
     case 'SEARCH_ERROR':
       return {
         ...state,
-        data: null,
+        data: [],
         isLoading: false,
         isError: true,
       }

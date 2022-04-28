@@ -1,3 +1,5 @@
+import { data } from "autoprefixer";
+
 const SearchResults = ({ searchResults }) => {
   return (  
     <section className='mx-auto px-4 py-2 w-full max-w-screen-lg lg:py-5'>
@@ -7,9 +9,9 @@ const SearchResults = ({ searchResults }) => {
 
       {searchResults.isLoading ? (
         <p>Loading...</p>
-      ) : !searchResults.data ? (
-        <p className='text-lg lg:text-xl'>No movies found."</p>
-      ) : (
+      ) : (searchResults.data && searchResults.data.length === 0) ? (
+        <p className='text-lg lg:text-xl'>No movies found.</p>
+      ) : (searchResults.data && searchResults.data.length > 0) && (
         <>
           <p className='text-lg lg:text-xl'>
             ({searchResults.data.length}) movie{searchResults.data.length > 1 && 's'} found.
@@ -33,6 +35,9 @@ const SearchResults = ({ searchResults }) => {
                   </h2>
                   <p className='mt-1 font-mono text-sm lg:text-lg '>
                     ({movie.Year})
+                  </p>
+                  <p>
+                    {movie.Plot}
                   </p>
                 </div>
               </li>
