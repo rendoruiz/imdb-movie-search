@@ -4,7 +4,7 @@ import SearchIcon from "./Icons/SearchIcon";
 const SearchBox = ({
   value,
   placeholder,
-  onInput,
+  onChange,
   onSubmit,
   onReset,
 }) => (
@@ -18,7 +18,7 @@ const SearchBox = ({
       placeholder={placeholder}
       className='flex-1 pl-3 pr-2 py-1 w-full bg-transparent text-lg'
       value={value}
-      onChange={onInput}
+      onChange={onChange}
     />
     {onReset && (
       <button

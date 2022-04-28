@@ -84,7 +84,7 @@ const App = () => {
     }
   );
 
-  const handleSearchTitleInput = (e) => {
+  const handleSearchTitleChange = (e) => {
     setSearchTitle(e.target.value);
   }
   const handleSearchTitleReset = () => {
@@ -177,7 +177,7 @@ const App = () => {
             <SearchBox 
               value={searchTitle}
               placeholder='Enter movie title'
-              onInput={handleSearchTitleInput}
+              onChange={handleSearchTitleChange}
               onSubmit={handleSearchTitleSubmit}
               onReset={handleSearchTitleReset}
             />
