@@ -1,11 +1,59 @@
+import axios from 'axios';
 import * as React from 'react';
 import './App.css';
 import TitleSearchBox from './components/TitleSearchBox';
 
-const api = process.env.REACT_APP_OMDB_API_KEY;
+const API_KEY = process.env.REACT_APP_OMDB_API_KEY;
+const API_ENDPOINT = `http://www.omdbapi.com/?apikey=${API_KEY}&`;
+
+const searchReducer = (state, action) => {
+  switch (action.type) {
+    case 'SEARCH_INIT':
+      return {
+        ...state,
+        data: null,
+        isNotFound: false,
+        isLoading: true,
+        isError: false,
+      };
+    case 'SEARCH_SUCCESS':
+      return {
+        ...state,
+        data: action.payload,
+        isNotFound: false,
+        isLoading: false,
+        isError: false,
+      };
+    case 'SEARCH_NOT_FOUND':
+      return {
+        ...state,
+        data: null,
+        isNotFound: true,
+        isLoading: false,
+        isError: false,
+      }
+    case 'SEARCH_ERROR':
+      return {
+        ...state,
+        data: null,
+        isNotFound: false,
+        isLoading: false,
+        isError: true,
+      }
+  }
+}
 
 const App = () => {
   const [searchTitle, setSearchTitle] = React.useState("");
+  const [searchResults, dispatchSearchResults] = React.useReducer(
+    searchReducer,
+    {
+      data: null,
+      isNotFound: false,
+      isLoading: false,
+      isError: false,
+    }
+  )
 
   const handleSearchTitleInput = (e) => {
     setSearchTitle(e.target.value);
@@ -13,11 +61,31 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('submit')
+
+    if (searchTitle.trim().length > 0) {
+      dispatchSearchResults({ type: 'SEARCH_INIT' });
+
+      const requestUrl = API_ENDPOINT + `s=${searchTitle}`;
+      axios.get(requestUrl)
+        .then((response) => {
+          if (response.data['Error']) {
+            dispatchSearchResults({ type: 'SEARCH_NOT_FOUND' });
+          } else if (response.data['Search']) {
+            dispatchSearchResults({ 
+              type: 'SEARCH_SUCCESS',
+              payload: response.data['Search'],
+            });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          dispatchSearchResults({ type: 'SEARCH_ERROR' });
+        }); 
+    }
   }
 
   return (
-    <div className='min-h-screen bg-black/90 text-white/90'>
+    <div className='grid content-start'>
       <header className='bg-yellow-500 text-black'>
         <div className='mx-auto px-4 py-2 w-full max-w-screen-lg'>
           <h1 className='font-bold text-2xl'>
@@ -25,7 +93,13 @@ const App = () => {
           </h1>
           <p className='text-sm uppercase tracking-wider'>
             Powered by&nbsp;
-            <a href="http://www.omdbapi.com/" target='_blank'>OMDb</a>
+            <a 
+              href="http://www.omdbapi.com/" 
+              target='_blank'
+              rel="noreferrer"
+            >
+              OMDb
+            </a>
           </p>
         </div>
       </header>
@@ -43,9 +117,28 @@ const App = () => {
 
         {searchTitle && (
           <section className='mx-auto px-4 py-2 w-full max-w-screen-lg'>
-            <p className='text-lg'>
-              Search results for "{searchTitle}"
-            </p>
+            {searchResults.isError && (
+              <p>Something went wrong. Please try again later.</p>
+            )}
+
+            {searchResults.isLoading ? (
+              <p>Loading...</p>
+            ) : searchResults.isNotFound ? (
+              <p className='text-lg'>No results found for "{searchTitle}"</p>
+            ) : searchResults.data && (
+              <>
+                <p className='text-lg'>
+                  Search results for "{searchTitle}"
+                </p>
+                <ul className=' truncate '>
+                  {searchResults.data.map((result) => (
+                    <li>
+                      {JSON.stringify(result)}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </section>
         )}
       </main>
