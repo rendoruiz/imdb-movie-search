@@ -86,13 +86,13 @@ const App = () => {
 
   const handleSearchTitleChange = (e) => {
     setSearchTitle(e.target.value);
+
   }
   const handleSearchTitleReset = () => {
     setSearchTitle("");
   }
 
-
-  const handleSearchTitleSubmit = (e) => {
+  React.useEffect(() => {
     if (searchTitle.trim().length > 0) {
       dispatchSearchResults({ type: 'SEARCH_INIT' });
 
@@ -119,8 +119,7 @@ const App = () => {
           dispatchSearchResults({ type: 'SEARCH_ERROR' });
         }); 
     }
-    e.preventDefault();
-  }
+  }, [searchTitle]);
 
   const handleNextPage = () => {
     if (searchResults.data.length < searchResults.itemCount) {
@@ -178,7 +177,6 @@ const App = () => {
               value={searchTitle}
               placeholder='Enter movie title'
               onChange={handleSearchTitleChange}
-              onSubmit={handleSearchTitleSubmit}
               onReset={handleSearchTitleReset}
             />
           </div>
