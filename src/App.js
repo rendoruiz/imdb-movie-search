@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as React from 'react';
 import './App.css';
 import SearchResults from './components/SearchResults';
-import TitleSearchBox from './components/TitleSearchBox';
+import SearchBox from './components/SearchBox';
 
 // http://www.omdbapi.com/
 const API_KEY = process.env.REACT_APP_OMDB_API_KEY;
@@ -87,8 +87,12 @@ const App = () => {
   const handleSearchTitleInput = (e) => {
     setSearchTitle(e.target.value);
   }
+  const handleSearchTitleReset = () => {
+    setSearchTitle("");
+  }
 
-  const handleSubmit = (e) => {
+
+  const handleSearchTitleSubmit = (e) => {
     if (searchTitle.trim().length > 0) {
       dispatchSearchResults({ type: 'SEARCH_INIT' });
 
@@ -170,10 +174,12 @@ const App = () => {
       <main className='relative grid content-start'>
         <section className='sticky top-0 bg-black/50 backdrop-blur-sm'>
           <div className='mx-auto px-4 py-3 w-full max-w-screen-lg'>
-            <TitleSearchBox 
-              searchTitle={searchTitle}
-              onSearchTitleInput={handleSearchTitleInput}
-              onSubmit={handleSubmit}
+            <SearchBox 
+              value={searchTitle}
+              placeholder='Enter movie title'
+              onInput={handleSearchTitleInput}
+              onSubmit={handleSearchTitleSubmit}
+              onReset={handleSearchTitleReset}
             />
           </div>
         </section>
