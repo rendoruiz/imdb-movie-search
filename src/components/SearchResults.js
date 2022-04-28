@@ -22,28 +22,35 @@ const SearchResults = ({
           {searchResults.data.map((movie) => (
             <li 
               key={movie.imdbID}
-              className='flex py-3'
+              className="grid" 
             >
-              <div className='grid place-items-center shrink-0 rounded-md border-2 mr-3 p-1 w-24 border-yellow-500 lg:w-40'>
-                {movie.Poster !== "N/A" ? (
-                  <img
-                    src={movie.Poster}
-                    alt={`Poster image for ${movie.Title}`}
-                    className='rounded'
-                  />
-                ) : (
-                  <span className="text-center lg:text-lg">Image Not Available</span>
-                )}
-              </div>
+              <a 
+                href={'https://www.imdb.com/title/' + movie.imdbID}
+                target='_blank'
+                rel='noreferrer'
+                className="flex px-2 py-3 transition-colors hover:bg-yellow-500/20 active:bg-yellow-500/50 lg:rounded lg:py-2"
+              >
+                <div className='shrink-0 grid place-items-center rounded-md border-2 mr-3 p-1 w-24 border-yellow-500 lg:w-40'>
+                  {movie.Poster !== "N/A" ? (
+                    <img
+                      src={movie.Poster}
+                      alt={`Poster image for ${movie.Title}`}
+                      className='rounded'
+                    />
+                  ) : (
+                    <span className="text-center lg:text-lg">Image Not Available</span>
+                  )}
+                </div>
 
-              <div className='flex-1'>
-                <h2 className='text-lg break-words leading-tight lg:text-xl lg:leading-snug'>
-                  {movie.Title}
-                </h2>
-                <p className='mt-1 font-mono text-sm lg:text-lg '>
-                  ({movie.Year})
-                </p>
-              </div>
+                <div className='flex-1'>
+                  <h2 className='text-lg break-words leading-tight lg:text-xl lg:leading-snug'>
+                    {movie.Title}
+                  </h2>
+                  <p className='mt-1 font-mono text-sm lg:text-lg '>
+                    ({movie.Year})
+                  </p>
+                </div>
+              </a>
             </li>
           ))}
         </ul>
@@ -51,7 +58,7 @@ const SearchResults = ({
         {(searchResults.data.length < searchResults.itemCount) && (
           <button
             type='button' 
-            className='rounded mt-3 px-5 py-2 w-full bg-yellow-500 font-bold text-black uppercase tracking-wide hover:opacity-80 active:opacity-70 lg:mt-5'
+            className='rounded mt-3 px-5 py-2 w-full bg-yellow-500 font-bold text-black uppercase tracking-wide transition-opacity hover:opacity-80 active:opacity-70 lg:mt-6'
             onClick={onNextPage}
           >
             Load More
