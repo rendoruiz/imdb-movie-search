@@ -83,7 +83,7 @@ const movieDetailReducer = (state, action) => {
     case 'FETCH_DETAIL_SUCCESS':
       return {
         ...state,
-        data: [...state.data, ...action.payload.data],
+        data: action.payload.data,
         isLoading: false,
         isError: false,
       }
@@ -98,7 +98,6 @@ const movieDetailReducer = (state, action) => {
         ...state,
         isOpen: !state.isOpen,
       }
-
     default:
       throw new Error();
   }
@@ -126,7 +125,7 @@ const App = () => {
       isError: false,
       isOpen: false,
     }
-  )
+  );
 
   const handleSearchTitleChange = (e) => setSearchTitle(e.target.value);
   const handleSearchTitleReset = () => setSearchTitle("");
@@ -169,7 +168,7 @@ const App = () => {
         .then((response) => {
           const { Error: isError, Search: searchItems, totalResults: itemCount } = response.data;
           if (isError) {
-            dispatchSearchResults({ type: 'SEARCH_PAGER_ERROR' });
+            throw new Error(isError);
           } else if (searchItems && itemCount) {
             dispatchSearchResults({ 
               type: 'SEARCH_PAGER_SUCCESS',
@@ -178,18 +177,45 @@ const App = () => {
                 itemCount: itemCount
               },
             });
+          } 
+        })
+        .catch((error) => {
+          console.error(error);
+          dispatchSearchResults({ type: 'SEARCH_PAGER_ERROR' });
+        }); 
+    }
+  }
+
+  const handleToggleMovieDetailsModal = () => dispatchMovieDetails({ type: 'TOGGLE_VISIBILITY' });
+
+  const handleViewMovieDetails = (imdbID) => {
+    if (imdbID) {
+      console.log(movieDetail.isOpen);
+      dispatchMovieDetails({ type: 'FETCH_DETAIL_INIT' });
+      console.log(movieDetail.isOpen);
+
+      const requestUrl = API_ENDPOINT + `i=${imdbID}`;
+      axios.get(requestUrl)
+        .then((response) => {
+          const { Error: isError, Response: requestResponse } = response.data;
+          if (isError) {
+            throw new Error(isError);
+          } else if (requestResponse === "True") {
+            console.log(response.data)
+            dispatchMovieDetails({ 
+              type: 'FETCH_DETAIL_SUCCESS',
+              payload: { data: response.data },
+            });
           } else {
             throw new Error();
           }
         })
         .catch((error) => {
           console.error(error);
-          dispatchSearchResults({ type: 'SEARCH_ERROR' });
+          dispatchMovieDetails({ type: 'FETCH_DETAIL_ERROR' });
         }); 
     }
   }
-
-  const handleToggleMovieDetailsModal = () => dispatchMovieDetails({ type: 'TOGGLE_VISIBILITY' });
 
   return (
     <>
@@ -228,6 +254,7 @@ const App = () => {
           <SearchResults 
             searchResults={searchResults} 
             onNextPage={handleNextPage}
+            onViewDetails={handleViewMovieDetails}
           />
         </main>
 
