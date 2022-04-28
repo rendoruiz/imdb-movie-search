@@ -1,10 +1,11 @@
 import axios from 'axios';
 import * as React from 'react';
 import './App.css';
+import SearchResults from './components/SearchResults';
 import TitleSearchBox from './components/TitleSearchBox';
 
 const API_KEY = process.env.REACT_APP_OMDB_API_KEY;
-const API_ENDPOINT = `http://www.omdbapi.com/?apikey=${API_KEY}&`;
+const API_ENDPOINT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&`;
 
 const searchReducer = (state, action) => {
   switch (action.type) {
@@ -12,7 +13,6 @@ const searchReducer = (state, action) => {
       return {
         ...state,
         data: null,
-        isNotFound: false,
         isLoading: true,
         isError: false,
       };
@@ -20,7 +20,6 @@ const searchReducer = (state, action) => {
       return {
         ...state,
         data: action.payload,
-        isNotFound: false,
         isLoading: false,
         isError: false,
       };
@@ -28,7 +27,6 @@ const searchReducer = (state, action) => {
       return {
         ...state,
         data: null,
-        isNotFound: true,
         isLoading: false,
         isError: false,
       }
@@ -36,7 +34,6 @@ const searchReducer = (state, action) => {
       return {
         ...state,
         data: null,
-        isNotFound: false,
         isLoading: false,
         isError: true,
       }
@@ -49,7 +46,6 @@ const App = () => {
     searchReducer,
     {
       data: null,
-      isNotFound: false,
       isLoading: false,
       isError: false,
     }
@@ -68,12 +64,12 @@ const App = () => {
       const requestUrl = API_ENDPOINT + `s=${searchTitle}`;
       axios.get(requestUrl)
         .then((response) => {
-          if (response.data['Error']) {
+          if (response.data.Error) {
             dispatchSearchResults({ type: 'SEARCH_NOT_FOUND' });
-          } else if (response.data['Search']) {
+          } else if (response.data.Search) {
             dispatchSearchResults({ 
               type: 'SEARCH_SUCCESS',
-              payload: response.data['Search'],
+              payload: response.data.Search,
             });
           }
         })
@@ -115,37 +111,10 @@ const App = () => {
           </div>
         </section>
 
-        {searchTitle && (
-          <section className='mx-auto px-4 py-2 w-full max-w-screen-lg'>
-            {searchResults.isError && (
-              <p>Something went wrong. Please try again later.</p>
-            )}
-
-            {searchResults.isLoading ? (
-              <p>Loading...</p>
-            ) : searchResults.isNotFound ? (
-              <p className='text-lg'>No results found for "{searchTitle}"</p>
-            ) : searchResults.data && (
-              <>
-                <p className='text-lg'>
-                  Search results for "{searchTitle}"
-                </p>
-                <ul className=' truncate '>
-                  {searchResults.data.map((result) => (
-                    <li>
-                      {JSON.stringify(result)}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-          </section>
-        )}
+        <SearchResults searchResults={searchResults} />
       </main>
     </div>
   );
 }
-
-
 
 export default App;
