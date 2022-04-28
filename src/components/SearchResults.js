@@ -5,6 +5,10 @@ const SearchResults = ({
   onNextPage,
 }) => (  
   <section className='mx-auto px-4 py-2 w-full max-w-screen-lg lg:py-5'>
+    {searchResults.data === null && !searchResults.isLoading && (
+      <p className="pt-20 font-light text-xl text-white/70 tracking-wide text-center sm:text-2xl lg:text-3xl">Start searching your favourite movie using the search box above.</p>
+    )}
+
     {searchResults.isError && (
       <p>Something went wrong. Please try again later.</p>
     )}

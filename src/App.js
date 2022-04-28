@@ -148,7 +148,7 @@ const App = () => {
   }
 
   return (
-    <div className='grid content-start'>
+    <div className='grid min-h-screen grid-rows-[auto,1fr,auto]'>
       <header className='bg-yellow-500 text-black'>
         <div className='mx-auto px-4 py-2 w-full max-w-screen-lg'>
           <h1 className='font-bold text-2xl'>

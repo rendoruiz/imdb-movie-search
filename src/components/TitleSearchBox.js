@@ -12,7 +12,7 @@ const TitleSearchBox = ({
     <input 
       type='text' 
       placeholder='Enter movie title'
-      className='px-3 py-1 bg-transparent text-lg'
+      className='px-3 py-1 w-full bg-transparent text-lg'
       value={searchTitle}
       onChange={onSearchTitleInput}
     />
