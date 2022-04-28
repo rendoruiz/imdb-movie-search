@@ -7,11 +7,9 @@ const SearchResults = ({
       <p className="pt-20 font-light text-xl text-white/70 tracking-wide text-center sm:text-2xl lg:text-3xl">Start searching your favourite movie using the search box above.</p>
     )}
 
-    {searchResults.isError && (
-      <p>Something went wrong. Please try again later.</p>
-    )}
-
-    {searchResults.isLoading ? (
+    {searchResults.isError ? (
+      <p className='text-lg lg:text-xl'>Something went wrong. Please try again later.</p>
+    ) : searchResults.isLoading ? (
       <p>Loading...</p>
     ) : (searchResults.data && searchResults.data.length === 0) ? (
       <p className='text-lg lg:text-xl'>No movies found.</p>
